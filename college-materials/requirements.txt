@@ -1,0 +1,6 @@
+Flask==3.0.0
+Flask-Cors==3.0.10
+Flask
+Werkzeug
+flask_httpauth
+flask_cors
