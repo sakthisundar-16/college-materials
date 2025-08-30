@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GPA & CGPA Calculator | Anna University Pattern</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Fonts and Bootstrap Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+   <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                </li>
+            </ul>
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      color: #181838;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .container {
+      margin: 3.5rem 0 2.5rem 0;
+      background: rgba(255,255,255,0.96);
+      border-radius: 20px;
+      box-shadow: 0 10px 32px 0 rgba(31,38,135,.18);
+      max-width: 540px;
+      width: 100%;
+      padding: 2.7rem 2.2rem;
+      animation: fadeIn 1s;
+    }
+    @keyframes fadeIn { from { opacity:0; margin-top:3rem; } to { opacity:1; margin-top:3.5rem; } }
+    h1, h2, h4 {
+      text-align: center;
+      color: #764ba2;
+      margin-bottom: .7em;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    label { color: #222; font-weight: 500;}
+    select, input[type="number"] {
+      border-radius: 10px;
+      font-size: 1rem;
+      border: 1.2px solid #764ba277;
+      background: #fafaff;
+      min-width: 95px;
+      padding:7px 12px;
+    }
+    .subject-row { display: flex; gap: 1em; margin-bottom: 1em; align-items: flex-end; }
+    .subject-row label { display:block; margin-bottom:2px;}
+    .btn {
+      width: 100%;
+      background: #764ba2;
+      color: #fff;
+      border: none;
+      border-radius: 22px;
+      padding: 12px 0;
+      font-size: 1.09rem;
+      font-weight: bold;
+      margin-top: 1.1em;
+      transition: background 0.26s;
+      cursor:pointer;
+      box-shadow: 0 2px 10px rgba(118,75,162,0.12);
+    }
+    .btn:hover { background: #667eea;}
+    .result, .error {
+      margin: 1.5em 0 0.5em 0;
+      text-align: center;
+      font-size: 1.18rem;
+      border-radius: 12px;
+      padding: 10px;
+    }
+    .result { background: #e0edfa; color: #207b31; border: 1.5px solid #7fd384;}
+    .error { background: #ffe8e8; color: #b63c3c; border: 1.5px solid #f5b7b7;}
+    .cgpa-panel { background: #f5f7fb; border-radius: 16px; padding: 17px 17px 11px 17px; margin: 29px 0 0 0; }
+    .cgpa-panel h4 { color:#444; font-weight:600; }
+    .small { font-size: 0.97em; color:#888; text-align:center; display:block; }
+    .grade-key { margin:22px auto 15px auto; text-align:center; }
+    .grade-key span { display:inline-block; border-radius:7px; padding:2px 10px; margin:2px 6px 2px 0; font-weight:600; background:#f8eaf7; color:#7c36c3;}
+    .divider { border:0; border-top:2px solid #dedede; margin:20px 0 12px 0;}
+    @media (max-width: 540px) {
+      .container { padding: 0.8rem 0.2rem; }
+      .subject-row { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+  <!-- ✅ Navbar should be inside body, not head -->
+  <nav style="width:100%;background:#333;padding:10px 20px;">
+    <a href="{{ url_for('index') }}" style="color:white;text-decoration:none;font-weight:bold;">
+      <i class="bi bi-house"></i> Home
+    </a>
+  </nav>
+
+  <div class="container">
+    <h1><i class="bi bi-calculator"></i> Anna Univ. GPA & CGPA Calculator</h1>
+    <div class="small mb-3">Includes all grades: O=10, A+=9, A=8, B+=7, B=6, <b>C=5</b>, RA=0</div>
+
+    <!-- Grade chart (auto generated in-app you may use: [image:1])-->
+    <div class="grade-key">
+      <span>O = 10</span>
+      <span>A+ = 9</span>
+      <span>A = 8</span>
+      <span>B+ = 7</span>
+      <span>B = 6</span>
+      <span>C = 5</span>
+      <span>RA = 0</span>
+    </div>
+    <hr class="divider">
+
+    <form id="gpaForm" autocomplete="off">
+      <div class="mb-3">
+        <label>Number of Subjects:
+          <input id="numSubjects" type="number" min="1" max="15" value="6" style="margin-left:8px;width:66px;" required>
+        </label>
+      </div>
+      <div id="subjectsList"></div>
+      <button type="button" class="btn" onclick="calculateGPA()"><i class="bi bi-graph-up"></i> Calculate GPA</button>
+    </form>
+    <div id="result" class="result" style="display:none;"></div>
+    <div id="error" class="error" style="display:none;"></div>
+
+    <div class="cgpa-panel">
+      <h4><i class="bi bi-bar-chart"></i> Calculate CGPA</h4>
+      <form id="cgpaForm">
+        <div class="mb-2">
+          <label>Enter your <b>GPA</b> and total <b>credits</b> for each semester:</label>
+        </div>
+        <div id="cgpaRows"></div>
+        <div>
+          <label>Number of Semesters:
+            <input id="numCgpaSems" type="number" min="1" max="8" value="2" style="width:52px;" required>
+          </label>
+        </div>
+        <button type="button" class="btn" style="background:#3c886a;margin:10px 0 0 0;" onclick="calculateCGPA()"><i class="bi bi-bar-chart-steps"></i> Calculate CGPA</button>
+      </form>
+      <div id="cgpaResult" class="result" style="display:none;"></div>
+    </div>
+  </div>
+
+  <script>
+    // Anna University grades mapping INCLUDING "C" (5 points)
+    const gpaGrades = [
+      {label: "O", value: 10},
+      {label: "A+", value: 9},
+      {label: "A", value: 8},
+      {label: "B+", value: 7},
+      {label: "B", value: 6},
+      {label: "C", value: 5},
+      {label: "RA", value: 0}
+    ];
+    // Dynamic subject entry builder
+    function buildSubjectsList(n) {
+      let list = "";
+      for(let i=1; i<=n; ++i) {
+        list += `
+        <div class="subject-row">
+          <div style="flex:1;">
+            <label for="grade${i}">Grade</label>
+            <select id="grade${i}" name="grade${i}" required>
+              <option value="">--Grade--</option>
+              ${gpaGrades.map(g=>`<option value="${g.label}">${g.label}</option>`).join('')}
+            </select>
+          </div>
+          <div style="flex:1;">
+            <label for="credits${i}">Credits</label>
+            <input type="number" id="credits${i}" name="credits${i}" min="1" max="5" step="0.5" required>
+          </div>
+        </div>`;
+      }
+      document.getElementById('subjectsList').innerHTML = list;
+    }
+    function calculateGPA() {
+      let n = parseInt(document.getElementById('numSubjects').value);
+      let totalCredits = 0, totalPoints = 0, error = "";
+      for(let i=1; i<=n; ++i) {
+        let grade = document.getElementById('grade'+i).value;
+        let credits = parseFloat(document.getElementById('credits'+i).value);
+        let pts = gpaGrades.find(g=>g.label===grade);
+        if(!grade || isNaN(credits)) { error = "Please fill all grades and credits."; break; }
+        totalCredits += credits;
+        totalPoints += (pts ? pts.value : 0) * credits;
+      }
+      let resultElem = document.getElementById("result"),
+          errElem = document.getElementById("error");
+      if(error || totalCredits==0) {
+        resultElem.style.display="none";
+        errElem.style.display="block";
+        errElem.textContent = error ? error : "Please enter at least one complete subject.";
+        return;
+      }
+      let gpa = totalPoints / totalCredits;
+      resultElem.style.display = "block";
+      resultElem.textContent = "Your GPA is: " + gpa.toFixed(2);
+      errElem.style.display = "none";
+    }
+    document.getElementById('numSubjects').addEventListener('change', function() {
+      let n = Math.max(1, Math.min(15, parseInt(this.value)||6));
+      buildSubjectsList(n);
+    });
+    buildSubjectsList(parseInt(document.getElementById('numSubjects').value));
+    // CGPA Panel logic
+    function buildCgpaRows(n) {
+      let r = "";
+      for(let i=1; i<=n; ++i) {
+        r += `<div class="subject-row">
+          <div style="flex:1;">
+            <label for="gpa${i}">GPA Sem ${i}</label>
+            <input type="number" id="gpa${i}" step="0.01" min="0" max="10" class="form-control" placeholder="e.g. 9.13">
+          </div>
+          <div style="flex:1;">
+            <label for="cgpacredits${i}">Total Credits</label>
+            <input type="number" id="cgpacredits${i}" min="1" max="36" class="form-control" placeholder="e.g. 25">
+          </div>
+        </div>`;
+      }
+      document.getElementById('cgpaRows').innerHTML = r;
+    }
+    function calculateCGPA() {
+      let n = parseInt(document.getElementById('numCgpaSems').value) || 0;
+      let totalCredits = 0, totalPoints = 0, error = "";
+      for(let i=1; i<=n; ++i) {
+        let gpa = parseFloat(document.getElementById('gpa'+i).value);
+        let credits = parseInt(document.getElementById('cgpacredits'+i).value);
+        if(isNaN(gpa) || isNaN(credits) || credits<=0) { error = "Fill all semester GPAs and credits correctly."; break; }
+        totalCredits += credits;
+        totalPoints += gpa * credits;
+      }
+      let cgpaElem = document.getElementById('cgpaResult');
+      if(error || totalCredits==0) {
+        cgpaElem.style.display = "none";
+        return alert(error ? error : "Please enter all required values.");
+      }
+      let cgpa = totalPoints / totalCredits;
+      cgpaElem.style.display = "block";
+      cgpaElem.textContent = "Your CGPA is: " + cgpa.toFixed(2);
+    }
+    document.getElementById('numCgpaSems').addEventListener('change', function() {
+      let n = Math.max(1, Math.min(8, parseInt(this.value)||2));
+      buildCgpaRows(n);
+    });
+    buildCgpaRows(parseInt(document.getElementById('numCgpaSems').value));
+  </script>
+</body>
+</html>

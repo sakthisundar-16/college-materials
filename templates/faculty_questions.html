@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Faculty Dashboard{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h2 class="fw-bold">Faculty Dashboard</h2>
+    <p class="text-muted">Welcome, {{ current_user.email }}!</p>
+</div>
+
+<div class="d-flex justify-content-center gap-3 mb-5">
+    <a href="{{ url_for('faculty_upload') }}" class="btn btn-primary btn-lg rounded-pill">
+        <i class="bi bi-upload"></i> Upload Material
+    </a>
+    <a href="{{ url_for('faculty_my_materials') }}" class="btn btn-success btn-lg rounded-pill">
+        <i class="bi bi-folder"></i> My Materials
+    </a>
+    <a href="{{ url_for('faculty_questions') }}" class="btn btn-info btn-lg rounded-pill">
+        <i class="bi bi-chat-dots"></i> View Questions
+    </a>
+</div>
+
+<!-- Questions Section -->
+{% if questions %}
+<h3 class="fw-bold mb-3"><i class="bi bi-chat-dots"></i> Student Questions</h3>
+
+{% for q in questions %}
+<div class="card mb-4 shadow-sm">
+    <div class="card-header bg-light">
+        <strong>{{ q.student_name }}</strong> asked about 
+        <em>{{ q.file_name }}</em>
+        <small class="text-muted float-end">{{ q.created_at|datetimeformat }}</small>
+    </div>
+    <div class="card-body">
+        <p class="text-primary">{{ q.encrypted_message|b64decode }}</p>
+
+        <!-- Replies -->
+        {% if q.replies %}
+        <div class="mt-3 ms-3 border-start ps-3">
+            {% for r in q.replies %}
+            <p class="mb-1"><strong>{{ r.sender_name }}</strong> replied:</p>
+            <p class="text-success">{{ r.encrypted_message|b64decode }}</p>
+            <small class="text-muted">At {{ r.created_at|datetimeformat }}</small>
+            <hr>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Reply form -->
+        <form method="post" action="{{ url_for('reply_question', msg_id=q.id) }}" class="mt-3">
+            <input type="hidden" name="encrypted_message" id="enc_reply_{{ q.id }}">
+            <textarea class="form-control mb-2" rows="2" id="plain_reply_{{ q.id }}"
+                      placeholder="Write your reply..."></textarea>
+            <button type="button" class="btn btn-sm btn-outline-primary"
+                    onclick="encryptReply('{{ q.id }}')">
+                <i class="bi bi-reply"></i> Send Reply
+            </button>
+        </form>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<div class="alert alert-info">No student questions yet.</div>
+{% endif %}
+
+<script>
+function encryptReply(id) {
+    id = parseInt(id);
+    const plain = document.getElementById('plain_reply_' + id).value;
+    if (!plain.trim()) {
+        alert("Reply cannot be empty.");
+        return;
+    }
+    const encrypted = btoa(unescape(encodeURIComponent(plain)));
+    document.getElementById('enc_reply_' + id).value = encrypted;
+    document.getElementById('plain_reply_' + id).form.submit();
+}
+</script>
+{% endblock %}

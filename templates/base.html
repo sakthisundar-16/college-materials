@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}CAMPUS CONNECT{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                        secondary: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Bootstrap CSS & Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1;
+        }
+        footer {
+            background: #1e293b;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: auto;
+        }
+        
+        /* College Header Styling */
+        .main_top_header { 
+    background: #eef3fe 0%, #dadde9 100%; 
+    border-bottom: 2px solid #e5e5e5; 
+}
+
+.college_main_logo { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 1.5rem; 
+    flex-wrap: wrap; 
+}
+
+.college_logo img { 
+    width: 160px; /* slightly bigger logo */
+}
+
+.navbar_head_text { 
+    flex: 1; 
+    text-align: center; 
+    margin: 0 1rem; 
+}
+
+.navbar_head_text h2 { 
+    font-size: 1.2rem;   /* increased */
+    font-weight: 500; 
+    color: #333; 
+}
+
+.college_name_head { 
+    font-size: 1.8rem;   /* increased */
+    font-weight: 700; 
+    color: #1e3a8a; 
+}
+
+.college_affiliation { 
+    font-size: 1.1rem;   /* increased */
+    color: #555; 
+}
+
+.naac_logo img { 
+    width: 140px; /* slightly bigger */
+}
+
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .college_main_logo {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .college_logo, .naac_logo {
+                margin-bottom: 15px;
+            }
+            
+            .navbar_head_text {
+                order: -1;
+                margin-bottom: 15px;
+                padding: 0 10px;
+            }
+            
+            .navbar_head_text h1 {
+                font-size: 1.3rem;
+            }
+            
+            .navbar_head_text h2 {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .navbar_head_text h1 {
+                font-size: 1.1rem;
+            }
+            
+            .navbar_head_text h2 {
+                font-size: 0.9rem;
+            }
+            
+            .college_affiliation {
+                font-size: 0.75rem;
+            }
+            
+            .college_logo img, .naac_logo img {
+                max-height: 60px;
+            }
+        }
+    </style>
+
+    {% block head %}{% endblock %}
+</head>
+<body>
+
+<!-- College Top Header -->
+<div class="main_top_header">
+    <div class="container">
+        <div class="college_main_logo">
+            <div class="college_logo">
+                <img src="https://nscet.org/main_images/College_logo.webp" alt="College Logo">
+            </div>
+            <div class="navbar_head_text">
+                <h2>Theni Melapettai Hindu Nadargal Uravinmurai</h2>
+                <h1 class="college_name_head">NADAR SARASWATHI COLLEGE OF ENGINEERING & TECHNOLOGY</h1>
+                <p class="college_affiliation">
+                    Approved by <strong>AICTE</strong>, New Delhi | Affiliated to <strong>Anna University</strong><br>
+                    Accredited by <strong>NAAC 'A'</strong> | <strong>ISO 9001:2015</strong> Certified | Theni - 625531
+                </p>
+            </div>
+            <div class="naac_logo">
+                <img src="https://nscet.org/main_images/naac.png" alt="NAAC Logo">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">NSCET Materials</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('gpa_cgpa_page') }}"><i class="bi bi-calculator"></i> GPA/CGPA</a></li>
+
+        {% if current_user.is_authenticated %}
+          {% if current_user.role == 'admin' %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_dashboard') }}">Admin</a></li>
+          {% elif current_user.role == 'faculty' %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('faculty_dashboard') }}">Faculty</a></li>
+          {% elif current_user.role == 'student' %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('student_dashboard') }}">Student</a></li>
+          {% endif %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Sign In</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main>
+  <div class="container my-4">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </div>
+</main>
+
+<!-- Footer -->
+<footer>
+  &copy; {{ current_year if current_year else '2025' }} NSCET College Materials Storage. All rights reserved.
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% block scripts %}{% endblock %}
+
+</body>
+</html>

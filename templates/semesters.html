@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}{{ department.name if department.name is defined else department['name'] }} - Semesters{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h2 class="fw-bold">
+        <i class="bi bi-journal-bookmark text-info"></i>
+        {{ department.name if department.name is defined else department['name'] }} &ndash; Semesters
+    </h2>
+    <p class="text-muted">Select a semester to view subjects</p>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
+    {% for sem in semesters %}
+    <div class="col">
+        <a href="{{ url_for(
+            'show_subjects',
+            department_id=department.id if department.id is defined else department['id'],
+            semester_id=sem.id if sem.id is defined else sem['id']
+        ) }}" class="text-decoration-none">
+            <div class="card shadow-sm h-100 border-info border-2 text-center py-3"
+                 style="background:rgba(255,255,255,0.92)">
+                <span class="fs-3 text-info"><i class="bi bi-calendar3"></i></span>
+                <h5 class="card-title mb-0 text-info fw-bold">
+                    {{ sem.name if sem.name is defined else sem['name'] }}
+                </h5>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="text-center my-4">
+    <a href="{{ url_for('index') }}" class="btn btn-outline-primary rounded-pill btn-lg">
+        <i class="bi bi-arrow-left"></i> Back to Departments
+    </a>
+</div>
+{% endblock %}

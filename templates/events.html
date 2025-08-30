@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Live Events & Blog{% endblock %}
+{% block content %}
+<div class="text-center mb-4">
+    <h2 class="fw-bold">📰 College Blog & Live Updates</h2>
+</div>
+{% for event in events %}
+  <div class="card my-3 shadow">
+    <div class="card-body">
+      <h5 class="card-title fw-bold mb-2">{{ event['title'] }}</h5>
+      <p class="mb-1 text-muted small">
+        <b>{{ event['department_name'] }}</b>
+        {% if event['event_date'] %}| {{ event['event_date'] }}{% endif %}
+        {% if event['author'] %}| By {{ event['author'] }}{% endif %}
+      </p>
+      {% if event['image_url'] %}
+       <div class=""d-flex justify-content-center my-3">    </div>
+        <img src="{{ event['image_url'] }}" alt="Event Image"
+             class="img-fluid mb-2" style="max-height:280px; border-radius:12px;"/>
+      {% endif %}
+      <p>{{ event['content'] }}</p>
+    </div>
+  </div>
+{% else %}
+  <div class="alert alert-info text-center">No events posted yet.</div>
+{% endfor %}
+{% endblock %}
