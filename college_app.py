@@ -1739,5 +1739,4 @@ def reply_question(msg_id):
     return redirect(url_for("faculty_questions"))
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+
