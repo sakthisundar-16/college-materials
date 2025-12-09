@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Nadar Saraswathi College of Engineering and Technology</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body { font-family: 'Poppins', sans-serif; background: #f8f9fa; color: #212529; }
+
+    /* ===== Top Header ===== */
+    .main_top_header { 
+    background: #a5bbe9 0%, #9faee4 100%; 
+    border-bottom: 2px solid #e5e5e5; 
+}
+
+.college_main_logo { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 1.5rem; 
+    flex-wrap: wrap; 
+}
+
+.college_logo img { 
+    width: 160px; /* slightly bigger logo */
+}
+
+.navbar_head_text { 
+    flex: 1; 
+    text-align: center; 
+    margin: 0 1rem; 
+}
+
+.navbar_head_text h2 { 
+    font-size: 1.2rem;   /* increased */
+    font-weight: 500; 
+    color: #333; 
+}
+
+.college_name_head { 
+    font-size: 1.8rem;   /* increased */
+    font-weight: 700; 
+    color: #1e3a8a; 
+}
+
+.college_affiliation { 
+    font-size: 1.1rem;   /* increased */
+    color: #555; 
+}
+
+.naac_logo img { 
+    width: 140px; /* slightly bigger */
+}
+
+
+    /* ===== Navbar ===== */
+    .navbar { background-color: #2c3e50 !important; }
+    .navbar-brand { font-weight: 700; font-size: 1.5rem; color: #fff !important; }
+    .btn-primary { background-color: #e67e22; border: none; font-weight: 600; }
+    .btn-primary:hover { background-color: #d35400; }
+
+/* ===== Hero ===== */
+  header {
+    background: url('https://images.unsplash.com/photo-1596495577886-d920f1ccba?auto=format&fit=crop&w=1470&q=80') 
+                no-repeat center center/cover;
+    position: relative;
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #fff;
+  }
+
+ header::after {
+  content: "";
+  position: absolute;
+  top: 10%;   /* Push down */
+  left: 10%;  /* Push right */
+  right: 10%; /* Shrink from right */
+  bottom: 10%;/* Shrink from bottom */
+  background: rgba(44, 62, 80, 0.65);
+  border-radius: 15px; /* optional, softer look */
+}
+  header h1, header h2, header h3  {
+    position: relative;
+    z-index: 1;
+    margin: 0.3rem 0;
+  }
+
+  header h1 {
+    font-size: 1.8rem;
+    text-transform: uppercase;
+  }
+
+  header h2 {
+    font-size: 1.2rem;
+    font-weight: 400;
+  }
+
+  header h3 {
+    font-size: 1rem;
+    font-weight: 300;
+  }
+  header h4 {
+    font-size: 0.9rem;
+    font-weight: 300;
+  }
+  
+  
+
+    /* ===== Section Headings ===== */
+    main { padding: 4rem 1.5rem; }
+    main h2.section-heading {
+      font-weight: 700;
+      border-bottom: 4px solid #e67e22;
+      padding-bottom: 0.5rem;
+      max-width: max-content;
+      margin: 0 auto 2rem auto;
+      color: #2c3e50;
+    }
+
+    /* ===== Department Cards ===== */
+    .dept-card img { height: 150px; object-fit: cover; }
+
+    /* ===== Footer ===== */
+    footer { background: #2c3e50; color: #fff; padding: 2rem 1rem; margin-top: 3rem; }
+    footer h5 { font-weight: 700; margin-bottom: 1rem; }
+    footer a { color: #f1c40f; text-decoration: none; }
+    footer a:hover { color: #fff; }
+    .footer-bottom { text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: #ccc; }
+    .social-icons a { color: #fff; font-size: 1.3rem; margin: 0 10px; transition: 0.3s; }
+    .social-icons a:hover { color: #f39c12; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .college_main_logo { flex-direction: column; text-align: center; }
+      .college_logo img, .naac_logo img { width: 70px; }
+      header h1 { font-size: 1.8rem; }
+    }
+
+    /* Noticeboard Animation */
+    @keyframes roll-up {
+      0% { top: 0; }
+      100% { top: -9999px; } /* will be adjusted dynamically in JS */
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+  <nav class="navbar navbar-expand-lg sticky-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="#">CAMPUS CONNECT:NSCET</a>
+      <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center gap-3">
+          <li class="nav-item"><a href="{{ url_for('login') }}" class="btn btn-primary">Materials</a></li>
+          <li class="nav-item"><a href="{{ url_for('events_all') }}" class="btn btn-outline-light">Events</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- College Top Header -->
+  <div class="main_top_header">
+    <div class="college_main_logo container">
+      <div class="college_logo">
+        <img src="https://nscet.org/main_images/College_logo.webp" alt="College Logo">
+      </div>
+      <div class="navbar_head_text">
+        <h2><b>THENI MELAPETTAI HINDU NADARGAL URAVINMURAI</b></h2>
+        <h1 class="college_name_head">NADAR SARASWATHI COLLEGE OF ENGINEERING & TECHNOLOGY</h1>
+        <p class="college_affiliation">
+          Approved by <strong>AICTE</strong>, New Delhi | Affiliated to <strong>Anna University</strong><br>
+          Accredited by <strong>NAAC 'A'</strong> | <strong>ISO 9001:2015</strong> Certified | Theni - 625531
+        </p>
+      </div>
+      <div class="naac_logo">
+        <img src="https://nscet.org/main_images/naac.png" alt="NAAC Logo">
+      </div>
+    </div>
+  </div>
+
+  
+
+<!-- Hero Section -->
+<header class="text-center py-8 bg-gradient-to-r from-indigo-700 via-purple-600 to-pink-600 text-white rounded-b-2xl shadow-xl">
+  <h1 class="text-3xl md:text-4xl font-extrabold tracking-wide drop-shadow-lg">
+    🚀 Campus Connect: NSCET Learning Gateway
+  </h1>
+  <h2 class="text-xl md:text-2xl mt-3 font-semibold">
+    Empowering Students for a Brighter Tomorrow 
+  </h2>
+  <h3 class="text-base md:text-lg mt-2 italic opacity-90">
+    College Blogs • News Updates • Student Voices
+  </h3>
+</header>
+
+
+
+  <!-- Notice Board -->
+  <div class="noticeboard-container my-4">
+    <h2 class="text-center mb-3 fw-bold text-primary">📢 Notice Board</h2>
+    <div class="noteboard-vertical-square shadow-sm">
+      <ul class="notice-list" id="noticeList">
+        <li>🎉 Welcome to Campus Connect!</li>
+        <li>🗓️ Admissions Open for 2025.</li>
+        <li>⭐ M.E Courses are Avaliable!</li>
+        <li>🏆 SIH:Students has win 1st Price.</li>
+        <li>📣 Exams from 24th Sept. Good luck!</li>
+      </ul>
+    </div>
+  </div>
+
+  <style>
+    .noticeboard-container {
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .noteboard-vertical-square {
+      height: 160px; /* adjust as needed */
+      overflow: hidden;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+      padding: 1rem;
+      position: relative;
+    }
+
+    .notice-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      width: 100%;
+    }
+
+    .notice-list li {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #4e342e;
+      padding: 8px 0;
+    }
+  </style>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const noticeList = document.getElementById('noticeList');
+      if (!noticeList) return;
+
+      // Clone notices for seamless looping
+      const clone = noticeList.cloneNode(true);
+      noticeList.parentElement.appendChild(clone);
+
+      const listHeight = noticeList.scrollHeight;
+      const duration = listHeight / 30; // adjust scroll speed (px/sec)
+
+      // Animate both original and clone
+      [noticeList, clone].forEach((ul, i) => {
+        ul.style.top = i === 0 ? "0" : listHeight + "px";
+        ul.style.animation = `scroll-up ${duration}s linear infinite`;
+      });
+
+      // Add keyframes dynamically
+      const styleSheet = document.createElement('style');
+      styleSheet.innerHTML = `
+        @keyframes scroll-up {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-${listHeight}px); }
+        }
+      `;
+      document.head.appendChild(styleSheet);
+
+      // Pause on hover
+      const container = document.querySelector('.noteboard-vertical-square');
+      container.addEventListener('mouseenter', () => {
+        noticeList.style.animationPlayState = 'paused';
+        clone.style.animationPlayState = 'paused';
+      });
+      container.addEventListener('mouseleave', () => {
+        noticeList.style.animationPlayState = 'running';
+        clone.style.animationPlayState = 'running';
+      });
+    });
+  </script>
+
+  <!-- Main Content -->
+  <main class="container">
+<!-- Department Highlights -->
+<section class="mb-5">
+  <h2 class="section-heading text-center">Department Highlights</h2>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    
+    <!-- AIDS Department -->
+    <div class="col">
+      <div class="card dept-card shadow-sm">
+        <div class="card-img-top dept-logo-container" data-glow="#2563eb">
+          <img src="https://www.nscet.org/assets/img/department/association/aim.png" class="dept-logo" alt="AI & Data Science Department Logo">
+        </div>
+        <div class="card-body text-center">
+          <h5 class="fw-bold">AIDS</h5>
+          <p class="card-text text-muted small">Artificial Intelligence & Data Science</p>
+          <a href="/department/20/achievements" class="btn btn-outline-primary btn-sm">View Achievements</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CIVIL Department -->
+    <div class="col">
+      <div class="card dept-card shadow-sm">
+        <div class="card-img-top dept-logo-container" data-glow="#10b981">
+          <img src="https://www.nscet.org/assets/img/department/association/EYCA.png" class="dept-logo" alt="Civil Engineering Logo">
+        </div>
+        <div class="card-body text-center">
+          <h5 class="fw-bold">CIVIL</h5>
+          <p class="card-text text-muted small">Civil Engineering</p>
+          <a href="/department/5/achievements" class="btn btn-outline-primary btn-sm">View Achievements</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CSE Department -->
+    <div class="col">
+      <div class="card dept-card shadow-sm">
+        <div class="card-img-top dept-logo-container" data-glow="#9333ea">
+          <img src="https://www.nscet.org/assets/img/department/association/fist.png" class="dept-logo" alt="Computer Science Engineering Logo">
+        </div>
+        <div class="card-body text-center">
+          <h5 class="fw-bold">CSE</h5>
+          <p class="card-text text-muted small">Computer Science Engineering</p>
+          <a href="/department/15/achievements" class="btn btn-outline-primary btn-sm">View Achievements</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ECE Department -->
+    <div class="col">
+      <div class="card dept-card shadow-sm">
+        <div class="card-img-top dept-logo-container" data-glow="#f59e0b">
+          <img src="https://www.nscet.org/assets/img/department/association/ECHELONZ.png" class="dept-logo" alt="Electronics and Communication Engineering Logo">
+        </div>
+        <div class="card-body text-center">
+          <h5 class="fw-bold">ECE</h5>
+          <p class="card-text text-muted small">Electronics & Communication Engineering</p>
+          <a href="/department/18/achievements" class="btn btn-outline-primary btn-sm">View Achievements</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- EEE Department -->
+    <div class="col">
+      <div class="card dept-card shadow-sm">
+        <div class="card-img-top dept-logo-container" data-glow="#ef4444">
+          <img src="https://www.nscet.org/assets/img/department/association/Electroblitz.png" class="dept-logo" alt="Electrical and Electronics Engineering Logo">
+        </div>
+        <div class="card-body text-center">
+          <h5 class="fw-bold">EEE</h5>
+          <p class="card-text text-muted small">Electrical & Electronics Engineering</p>
+          <a href="/department/16/achievements" class="btn btn-outline-primary btn-sm">View Achievements</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- IT Department -->
+    <div class="col">
+      <div class="card dept-card shadow-sm">
+        <div class="card-img-top dept-logo-container" data-glow="#06b6d4">
+          <img src="https://www.nscet.org/assets/img/department/association/nexus.jpg" class="dept-logo" alt="Information Technology Logo">
+        </div>
+        <div class="card-body text-center">
+          <h5 class="fw-bold">IT</h5>
+          <p class="card-text text-muted small">Information Technology</p>
+          <a href="/department/21/achievements" class="btn btn-outline-primary btn-sm">View Achievements</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- MECH Department -->
+    <div class="col">
+      <div class="card dept-card shadow-sm">
+        <div class="card-img-top dept-logo-container" data-glow="#374151">
+          <img src="https://www.nscet.org/assets/img/department/association/mass.png" class="dept-logo" alt="Mechanical Engineering Logo">
+        </div>
+        <div class="card-body text-center">
+          <h5 class="fw-bold">MECH</h5>
+          <p class="card-text text-muted small">Mechanical Engineering</p>
+          <a href="/department/17/achievements" class="btn btn-outline-primary btn-sm">View Achievements</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .dept-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  }
+
+  .dept-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+  }
+
+  .dept-logo-container {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 20px;
+    border-radius: 12px 12px 0 0;
+    transition: box-shadow 0.4s ease, background 0.4s ease;
+  }
+
+  .dept-logo {
+    max-height: 150px;
+    max-width: 100%;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+  }
+
+  .dept-logo-container:hover .dept-logo {
+    transform: scale(1.1);
+  }
+
+  .dept-logo-container:hover {
+    box-shadow: 0 0 25px var(--glow-color, #3b82f6);
+    background: #fff;
+  }
+
+  /* Section heading */
+  .section-heading {
+    margin: 3rem 0 2rem;
+    color: #1e3a8a;
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 15px;
+  }
+
+  .section-heading:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(to right, #3b82f6, #8b5cf6);
+    border-radius: 3px;
+  }
+
+  .card-body .btn {
+    border-radius: 20px;
+    font-size: 0.85rem;
+    padding: 0.35rem 1rem;
+  }
+</style>
+
+<script>
+  // Apply custom glow color dynamically
+  document.querySelectorAll('.dept-logo-container').forEach(el => {
+    const glow = el.getAttribute('data-glow');
+    if (glow) {
+      el.style.setProperty('--glow-color', glow);
+    }
+  });
+</script>
+
+    <!-- Events -->
+    <section class="mt-5">
+      <h2 class="section-heading text-center">Latest Events</h2>
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+          <div class="card h-100 shadow-sm border-0">
+            <img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4no_s1YgwGCPQ2n-JK-otngKSfFoklbo4YcR5v8RYHplJCPGgMvsBv-kuJey6bY6nzHL6NLzmWjWje6jN_dbN0DmFMwugXxVpZmGucyzlkvZ8Ke7mNagl_FhxWfkE2yZEp7SI2fC=s1360-w1360-h1020-rw" class="img-fluid rounded-top" style="max-height:180px; object-fit:cover">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">Hackathon & Bootcamp</h5>
+              <p class="card-subtitle mb-2 text-muted">CSE | Sept 18, 2025</p>
+              <p class="card-text flex-grow-1">Sample description of event.</p>
+              <a href="#" class="btn btn-outline-primary mt-3">View All Events</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer mt-5">
+    <div class="container">
+      <div class="row g-4">
+        <!-- College Info -->
+        <div class="col-md-4">
+          <h5 class="fw-bold mb-3">About NSCET</h5>
+          <p>NSCET is a vibrant institution located in Theni, known for its commitment to academic excellence, diverse student body, and a thriving campus culture. With state-of-the-art facilities and a dedicated faculty, it provides a conducive environment for holistic learning and personal growth.</p>
+        </div>
+        <!-- Quick Links -->
+        <div class="col-md-4">
+          <h5 class="fw-bold mb-3">Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="/" class="text-decoration-none text-light">Home</a></li>
+            <li><a href="/materials" class="text-decoration-none text-light">Materials</a></li>
+            <li><a href="/events" class="text-decoration-none text-light">Events</a></li>
+            <li><a href="/departments" class="text-decoration-none text-light">Departments</a></li>
+            <li><a href="/contact" class="text-decoration-none text-light">Contact</a></li>
+          </ul>
+        </div>
+      <!-- Google Maps -->
+<div class="col-md-4">
+    <h5 class="fw-bold mb-3">Find Us</h5>
+    <div class="map-container rounded shadow-sm overflow-hidden" style="height: 220px;">
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.093905821099!2d77.50365187402402!3d10.03046516197095!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTDCsDAxJzQ5LjciTiA3N8KwMzAnMjEuMCJF!5e0!3m2!1sen!2sin!4v1692932854335!5m2!1sen!2sin"
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+    <div class="mt-2">
+        <p class="mb-1 small"><i class="bi bi-geo-alt-fill text-primary me-2"></i> Theni - 625531, Tamil Nadu</p>
+        <a href="https://maps.google.com/?q=10.030465203350865,77.50582655513612" target="_blank" class="btn btn-sm btn-outline-primary mt-1">
+            <i class="bi bi-arrow-up-right-square me-1"></i> Open in Google Maps
+        </a>
+    </div>
+</div>
+      <hr class="border-light mt-4">
+      <p class="text-center mb-0">&copy; 2025 NSCET - All Rights Reserved</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

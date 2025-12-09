@@ -1,0 +1,8 @@
+c.execute('DROP TABLE IF EXISTS materials;')
+c.execute('DROP TABLE IF EXISTS subjects;')
+c.execute('DROP TABLE IF EXISTS departments;')
+if os.path.exists(DB_PATH):
+    os.remove(DB_PATH)
+http://127.0.0.1:5000/admin/events/new
+http://127.0.0.1:5000/admin/department-achievements/new
+http://127.0.0.1:5000/admin/upload

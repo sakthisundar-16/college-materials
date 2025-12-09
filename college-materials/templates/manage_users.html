@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block title %}Manage Users{% endblock %}
+{% block content %}
+<div class="max-w-4xl mx-auto mt-10">
+  <!-- Title -->
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">Manage Users</h2>
+
+  <!-- Add User Form -->
+  <div class="bg-white shadow-md rounded-2xl p-6 mb-8">
+    <h3 class="text-lg font-semibold text-gray-700 mb-4">Add New User</h3>
+    <form method="POST" action="{{ url_for('add_user') }}" class="space-y-4">
+      <input type="text" name="name" placeholder="Full Name" required class="border p-2 w-full rounded">
+      <input type="email" name="email" placeholder="Email" required class="border p-2 w-full rounded">
+      <input type="password" name="password" placeholder="Password" required class="border p-2 w-full rounded">
+      
+      <select name="role" id="roleSelect" class="border p-2 w-full rounded" onchange="toggleDepartmentField()">
+        <option value="faculty">Faculty</option>
+        <option value="student">Student</option>
+      </select>
+      
+      <div id="deptField" style="display:none;">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Select Department:</label>
+        <select name="department" class="border p-2 w-full rounded">
+          {% for department in departments %}
+          <option value="{{ department['name'] }}">{{ department['name'] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      
+      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Add User</button>
+    </form>
+  </div>
+
+
+  <!-- User List -->
+  <div class="bg-white shadow-md rounded-2xl p-6">
+    <h3 class="text-lg font-semibold text-gray-700 mb-4">User List</h3>
+    <ul class="divide-y divide-gray-200">
+      {% for user in users %}
+      <li class="flex justify-between items-center py-3">
+        <div>
+          <p class="font-medium text-gray-800">{{ user['email'] }}</p>
+          <p class="text-sm text-gray-500">{{ user['role'] }}</p>
+        </div>
+        {% if user['role'] != 'admin' %}
+        <form method="post" action="{{ url_for('delete_user', user_id=user['id']) }}">
+          <button type="submit"
+                  class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition">
+            Delete
+          </button>
+        </form>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<script>
+  function toggleDepartmentField() {
+    const roleSelect = document.getElementById('roleSelect');
+    const deptField = document.getElementById('deptField');
+    deptField.style.display = roleSelect.value === 'student' ? 'block' : 'none';
+  }
+  
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    toggleDepartmentField();
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}My Uploaded Materials{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h2 class="fw-bold">My Uploaded Materials</h2>
+    <p class="text-muted">Here are all the materials you have uploaded.</p>
+</div>
+
+{% if materials|length == 0 %}
+    <div class="alert alert-warning text-center">
+        <i class="bi bi-exclamation-triangle me-2"></i> You have not uploaded any materials yet.
+    </div>
+{% else %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle shadow-sm" style="background-color:#fff; border-radius:12px;">
+            <thead class="table-light">
+                <tr>
+                    <th>File</th>
+                    <th>Subject</th>
+                    <th>Semester</th>
+                    <th>Department</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mat in materials %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('uploaded_file', filename=mat['filename']) }}"
+                           class="fw-bold text-primary text-decoration-none" download>
+                            <i class="bi bi-file-earmark-arrow-down"></i> {{ mat['original_filename'] }}
+                        </a>
+                    </td>
+                    <td>{{ mat['subject_name'] }}</td>
+                    <td>{{ mat['semester_name'] }}</td>
+                    <td>{{ mat['department_name'] }}</td>
+                    <td class="text-center">
+                        <form method="post" action="{{ url_for('faculty_delete_material', material_id=mat['id']) }}" class="d-inline">
+                            <button type="submit" class="btn btn-danger btn-sm rounded-pill"
+                                    onclick="return confirm('Delete this file?');">
+                                <i class="bi bi-trash"></i> Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+
+<div class="text-center mt-4">
+    <a href="{{ url_for('faculty_dashboard') }}" class="btn btn-outline-primary rounded-pill">
+        <i class="bi bi-arrow-left"></i> Back to Dashboard
+    </a>
+</div>
+{% endblock %}

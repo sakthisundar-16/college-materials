@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<h2>Welcome, {{ current_user.name or current_user.email }}</h2>
+<h3>Recent Materials</h3>
+<ul>
+  {% for m in materials %}
+    <li>
+      {{ m['orig_filename'] }} (Subject: {{ m['subject'] }})
+      <a href="{{ url_for('download_material', material_id=m['id']) }}">Download</a>
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}

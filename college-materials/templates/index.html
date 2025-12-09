@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Select Department | College Materials{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h2 class="fw-bold">Select Department</h2>
+    <p class="text-muted">Browse materials by department</p>
+</div>
+
+{% set dept_icons = {
+    'CSE': '💻',
+    'MECH': '🛠️',
+    'EEE': '💡',
+    'ECE': '🧑‍🔧',
+    'CIVIL': '👷‍♂️',
+    'AIDS': '🧠',
+    'IT': '🧑‍💻'
+} %}
+
+<div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
+    {% for dept in departments %}
+    <div class="col">
+        <a href="{{ url_for('show_semesters', department_id=dept.id) }}" class="text-decoration-none">
+            <div class="card shadow-sm h-100 border-primary border-2 text-center py-4"
+                 style="background:rgba(255,255,255,0.88)">
+                <div class="display-4 mb-2">
+                    {{ dept_icons.get(dept.name, '🏫') }}
+                </div>
+                <h5 class="card-title mb-0 fw-bold text-primary">{{ dept.name }}</h5>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

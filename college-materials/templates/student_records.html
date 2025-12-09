@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+
+{% block title %}Student Records - College Portal{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-users me-2"></i>Student Records</h2>
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i>Back to Dashboard
+                </a>
+            </div>
+
+            <!-- Department Filter -->
+            <div class="card mb-4">
+                <div class="card-header bg-light">
+                    <h6 class="mb-0"><i class="fas fa-filter me-2"></i>Filter by Department</h6>
+                </div>
+                <div class="card-body">
+                    <form id="departmentFilterForm" class="row g-3 align-items-center">
+                        <div class="col-md-6">
+                            <select class="form-select" id="departmentFilter" name="department">
+                                <option value="">All Departments</option>
+                                <option value="CSE">CSE</option>
+                                <option value="EEE">EEE</option>
+                                <option value="MECH">MECH</option>
+                                <option value="ECE">ECE</option>
+                                <option value="CIVIL">CIVIL</option>
+                                <option value="AIDS">AIDS</option>
+                                <option value="IT">IT</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-filter me-1"></i>Apply Filter
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary ms-2" onclick="clearFilter()">
+                                <i class="fas fa-times me-1"></i>Clear
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% if students %}
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-list me-2"></i>All Students</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover mb-0">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Department</th>
+                                    <th>Role</th>
+                                    <th>Created At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in students %}
+                                <tr>
+                                    <td>{{ student.id }}</td>
+                                    <td>{{ student.name or 'N/A' }}</td>
+                                    <td>{{ student.email }}</td>
+                                    <td>
+                                        {% if student.department %}
+                                            <span class="badge bg-secondary">{{ student.department }}</span>
+                                        {% else %}
+                                            <span class="badge bg-warning">Not Assigned</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info">{{ student.role }}</span>
+                                    </td>
+                                    <td>
+                                        {% if student.created_at %}
+                                            {{ student.created_at|datetimeformat('%Y-%m-%d %H:%M') }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <button class="btn btn-outline-primary" data-bs-toggle="modal" 
+                                                    data-bs-target="#detailsModal{{ student.id }}">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-outline-warning" data-bs-toggle="modal" 
+                                                    data-bs-target="#editModal{{ student.id }}">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <form action="{{ url_for('delete_user', user_id=student.id) }}" method="POST" class="d-inline">
+                                                <button type="submit" class="btn btn-outline-danger" 
+                                                        onclick="return confirm('Are you sure you want to delete this student?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- View Details Modal -->
+                                <div class="modal fade" id="detailsModal{{ student.id }}" tabindex="-1">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title"><i class="fas fa-user"></i> Student Details</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p><strong>Name:</strong> {{ student.name }}</p>
+                                                <p><strong>Email:</strong> {{ student.email }}</p>
+                                                <p><strong>Department:</strong> {{ student.department or 'N/A' }}</p>
+                                                <p><strong>Created At:</strong> {{ student.created_at }}</p>
+                                                
+                                                <hr>
+                                                <h6><i class="fas fa-history me-2"></i>Download History</h6>
+                                                {% if student.history %}
+                                                    <ul class="list-group">
+                                                        {% for record in student.history %}
+                                                            <li class="list-group-item d-flex justify-content-between">
+                                                                <span>{{ record.action }}</span>
+                                                                <small class="text-muted">{{ record.timestamp }}</small>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% else %}
+                                                    <p class="text-muted">No download history available.</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Edit Modal -->
+                                <div class="modal fade" id="editModal{{ student.id }}" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title"><i class="fas fa-edit"></i> Edit Student</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <form action="{{ url_for('edit_user', user_id=student.id) }}" method="POST">
+                                                <div class="modal-body">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Name</label>
+                                                        <input type="text" name="name" value="{{ student.name }}" class="form-control">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Email</label>
+                                                        <input type="email" name="email" value="{{ student.email }}" class="form-control">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Department</label>
+                                                        <select name="department" class="form-select">
+                                                            <option value="">-- Select --</option>
+                                                            {% for dept in ['CSE','EEE','MECH','ECE','CIVIL','AIDS','IT'] %}
+                                                                <option value="{{ dept }}" {% if student.department == dept %}selected{% endif %}>{{ dept }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer text-muted">
+                    <small>Total Students: {{ students|length }}</small>
+                </div>
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>No student records found.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.table th {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+.table td {
+    vertical-align: middle;
+}
+.badge {
+    font-size: 0.8rem;
+}
+.btn-group .btn {
+    border-radius: 0.25rem;
+}
+</style>
+
+<script>
+// Initialize tooltips
+document.addEventListener('DOMContentLoaded', function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+    
+    // Set the selected department from URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const department = urlParams.get('department');
+    if (department) {
+        document.getElementById('departmentFilter').value = department;
+    }
+});
+
+// Handle department filter form submission
+document.getElementById('departmentFilterForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const department = document.getElementById('departmentFilter').value;
+    let url = "{{ url_for('student_records') }}";
+    if (department) {
+        url += `?department=${encodeURIComponent(department)}`;
+    }
+    window.location.href = url;
+});
+
+// Clear filter function
+function clearFilter() {
+    window.location.href = "{{ url_for('student_records') }}";
+}
+</script>
+{% endblock %}

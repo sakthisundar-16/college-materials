@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Admin: Add Department Achievement{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h2 class="fw-bold">Add Department Achievement</h2>
+    <p class="text-muted">Fill details to add achievements for a department.</p>
+</div>
+
+<div class="form-card mx-auto" style="max-width: 480px;">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+          {{ messages[0] }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endif %}
+    {% endwith %}
+    <form method="post" novalidate>
+        <div class="mb-3">
+            <label for="department_id" class="form-label">Department</label>
+            <select id="department_id" name="department_id" class="form-select" required aria-describedby="departmentHelp">
+                <option value="" selected disabled>Select Department</option>
+                {% for dept in departments %}
+                <option value="{{ dept['id'] }}">{{ dept['name'] }}</option>
+                {% endfor %}
+            </select>
+            <div id="departmentHelp" class="form-text">Select the department to which this achievement belongs.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="title" class="form-label">Achievement Title <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="title" name="title" maxlength="150" required placeholder="Enter achievement title" aria-required="true" aria-describedby="titleHelp" />
+            <div id="titleHelp" class="form-text">Enter a concise title for this achievement.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description (optional)</label>
+            <textarea class="form-control" id="description" name="description" rows="4" maxlength="600" placeholder="Provide detailed description (max 600 characters)"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="image_url" class="form-label">Image URL (optional)</label>
+            <input type="url" class="form-control" id="image_url" name="image_url" placeholder="https://example.com/image.jpg" aria-describedby="imageHelp" />
+            <div id="imageHelp" class="form-text">Provide a valid image URL to associate an image with this achievement.</div>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">Add Achievement</button>
+    </form>
+</div>
+{% endblock %}

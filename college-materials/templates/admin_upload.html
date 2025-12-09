@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}Admin: Upload Material{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h2 class="fw-bold">Admin: Upload Material</h2>
+    <p class="text-muted">Select department, semester, subject, and upload material file.</p>
+</div>
+
+<div class="form-card mx-auto" style="max-width: 480px;">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                {{ messages[0] }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+    {% endwith %}
+    <form method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="department" class="form-label">Department</label>
+            <select id="department" name="department" class="form-select" required onchange="loadSemesters()">
+                <option value="">Select Department</option>
+                {% for dept in departments %}
+                <option value="{{ dept['id'] }}">{{ dept['name'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="semester" class="form-label">Semester</label>
+            <select id="semester" name="semester" class="form-select" required disabled onchange="loadSubjects()">
+                <option value="">Select Semester</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="subject" class="form-label">Subject</label>
+            <select id="subject" name="subject" class="form-select" required disabled>
+                <option value="">Select Subject</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="file" class="form-label">Material File</label>
+            <input type="file" class="form-control" id="file" name="file" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Upload</button>
+    </form>
+</div>
+
+<script>
+function loadSemesters() {
+    const dept_id = document.getElementById('department').value;
+    const semester_select = document.getElementById('semester');
+    const subject_select = document.getElementById('subject');
+    semester_select.innerHTML = '<option value="">Select Semester</option>';
+    subject_select.innerHTML = '<option value="">Select Subject</option>';
+    semester_select.disabled = true;
+    subject_select.disabled = true;
+    if (!dept_id) return;
+
+    fetch('/admin/semesters/' + dept_id)
+        .then(resp => resp.json())
+        .then(data => {
+            data.semesters.forEach(function(sem) {
+                semester_select.innerHTML += `<option value="${sem.id}">${sem.name}</option>`;
+            });
+            semester_select.disabled = false;
+        })
+        .catch(err => alert('Could not load semesters: ' + err));
+}
+
+function loadSubjects() {
+    const semester_id = document.getElementById('semester').value;
+    const subject_select = document.getElementById('subject');
+    subject_select.innerHTML = '<option value="">Select Subject</option>';
+    subject_select.disabled = true;
+    if (!semester_id) return;
+
+    fetch('/admin/subjects/' + semester_id)
+        .then(resp => resp.json())
+        .then(data => {
+            data.subjects.forEach(function(subj) {
+                subject_select.innerHTML += `<option value="${subj.id}">${subj.name}</option>`;
+            });
+            subject_select.disabled = false;
+        })
+        .catch(err => alert('Could not load subjects: ' + err));
+}
+</script>
+{% endblock %}
